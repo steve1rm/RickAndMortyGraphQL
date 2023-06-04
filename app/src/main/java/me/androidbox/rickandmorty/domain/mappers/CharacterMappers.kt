@@ -17,12 +17,12 @@ fun CharactersQuery.Result.toCharactersModel(): CharactersModel {
 fun CharacterQuery.Character.toCharacterModel(): CharacterModel {
     return CharacterModel(
         id = this.id.orEmpty(),
+        name = this.name.orEmpty(),
         image = this.image.orEmpty(),
         species = this.species.orEmpty(),
         status = this.status.orEmpty(),
+        gender = this.gender.orEmpty(),
         location = this.location,
-        episode = this.episode.mapNotNull { episode ->
-            episode?.air_date.orEmpty()
-        })
+        episode = this.episode.mapNotNull { it?.name.orEmpty()} )
 }
 

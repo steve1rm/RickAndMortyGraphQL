@@ -1,6 +1,7 @@
 query Character($characterId: ID!) {
     character(id: $characterId) {
         id
+        name
         image
         species
         status
@@ -8,7 +9,8 @@ query Character($characterId: ID!) {
             name
         }
         episode {
-            air_date
+            name
         }
+        gender
     }
 }

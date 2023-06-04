@@ -6,16 +6,19 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -28,8 +31,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import me.androidbox.rickandmorty.R
@@ -51,7 +57,10 @@ fun CharactersScreen(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
         else {
-            LazyColumn(modifier = Modifier.fillMaxWidth()
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(rickAndMortyState.listOfCharacter) { character ->
                     CharacterItem(
@@ -86,23 +95,37 @@ fun CharacterDialog(
     modifier: Modifier = Modifier) {
 
     val episodes = remember(characterModel.episode) {
-        characterModel.episode.joinToString()
+        characterModel.episode.take(3).joinToString()
     }
 
     Dialog(
         onDismissRequest = onDismiss) {
 
         Column(modifier = modifier) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Image(painterResource(id = R.drawable.ic_launcher_foreground), contentDescription = null)
-                Text(text = characterModel.species)
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically) {
+                AsyncImage(
+                    modifier = Modifier.clip(CircleShape),
+                    model = characterModel.image,
+                    contentDescription = "Image of morty"
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Text(
+                    text = characterModel.name,
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = characterModel.id)
-            Text(text = episodes)
-            Text(text = characterModel.location?.name.orEmpty())
+            Text(text = "Gender: ${characterModel.gender}", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = "Status: ${characterModel.status}", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = "Location: ${characterModel.location?.name.orEmpty()}", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+            Text(text = "Episodes: $episodes", color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
         }
     }
 }
@@ -120,15 +143,18 @@ fun CharacterItem(
             contentDescription = "Image of morty"
         )
 
+        Spacer(modifier = Modifier.width(16.dp))
+
         Column(
             modifier = Modifier
                 .wrapContentSize()
                 .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
-            Text(text = character.name)
+            Text(
+                text = character.name, color = Color.Black, fontSize = 18.sp, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = character.species)
+            Text(text = character.species, color = Color.DarkGray, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
         }
     }
 }
