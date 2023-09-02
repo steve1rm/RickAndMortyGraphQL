@@ -1,4 +1,4 @@
-# RickAndMortyGraphQL
+# Rick And Morty GraphQL
 Uses GraphQL to display Rick and Morty characters
 
 ![rickmortylist](https://github.com/steve1rm/RickAndMortyGraphQL/assets/14260802/b8f8e0ec-e216-426c-9f3e-4491385090c9)
